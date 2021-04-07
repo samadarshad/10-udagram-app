@@ -33,7 +33,7 @@ const serverlessConfiguration: AWS = {
       GROUPS_TABLE: "Groups-${self:provider.stage}",
       IMAGES_TABLE: "Images-${self:provider.stage}",
       IMAGE_ID_INDEX: "ImageIdIndex",
-      IMAGES_S3_BUCKET: "serverless-udagram-324941539183-test1-images-${self:provider.stage}",
+      IMAGES_S3_BUCKET: "serverless-udagram-324941539183-images-${self:provider.stage}",
       SIGNED_URL_EXPIRATION: '300'
     },
     iamRoleStatements: [
