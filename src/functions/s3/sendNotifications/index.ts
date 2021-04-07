@@ -5,7 +5,7 @@ export default {
   events: [
     {
       s3: {
-        bucket: "serverless-udagram-324941539183-images-dev",
+        bucket: "${self:provider.environment.IMAGES_S3_BUCKET}",
         event: 's3:ObjectCreated:*',
         existing: true,
       }
