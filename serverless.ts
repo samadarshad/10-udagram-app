@@ -226,6 +226,38 @@ const serverlessConfiguration: AWS = {
           BillingMode: 'PAY_PER_REQUEST',
           TableName: "${self:provider.environment.CONNECTIONS_TABLE}"
         }        
+      },
+      'ImagesSearch': {
+        Type: 'AWS::Elasticsearch::Domain',
+        Properties: {
+          ElasticsearchVersion: '6.3',
+          DomainName: 'images-search-${self:provider.stage}',
+          ElasticsearchClusterConfig: {
+            DedicatedMasterEnabled: false,
+            InstanceCount: '1',
+            ZoneAwarenessEnabled: false,
+            InstanceType: 't2.small.elasticsearch'
+          },
+          EBSOptions: {
+            EBSEnabled: true,
+            Iops: 0,
+            VolumeSize: 10,
+            VolumeType: 'gp2'
+          },
+          AccessPolicies: {
+            Version: '2012-10-17',
+            Statement: [
+              {
+                Effect: 'Allow',
+                Principal: {
+                  AWS: ['*']
+                },
+                Action: ['es:*'],
+                Resource: 'arn:aws:es:${self:provider.region}:${self:provider.environment.accountId}:domain/images-search-${self:provider.stage}/*'
+              }
+            ]
+          }
+        }
       }
     }
   }
