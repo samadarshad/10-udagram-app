@@ -7,6 +7,8 @@ import getImages from '@functions/getImages';
 import getImage from '@functions/getImage';
 import createImage from '@functions/createImage';
 import sendNotifications from '@functions/s3/sendNotifications';
+import connect from '@functions/websocket/connect';
+import disconnect from '@functions/websocket/disconnect'; 
 
 const serverlessConfiguration: AWS = {
   service: 'serverless-udagram-app',
@@ -33,6 +35,7 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       GROUPS_TABLE: "Groups-${self:provider.stage}",
       IMAGES_TABLE: "Images-${self:provider.stage}",
+      CONNECTIONS_TABLE: "Connections-${self:provider.stage}",
       IMAGE_ID_INDEX: "ImageIdIndex",
       IMAGES_S3_BUCKET: "serverless-udagram-${self:provider.environment.accountId}-images-${self:provider.stage}",
       SIGNED_URL_EXPIRATION: '300'
@@ -69,6 +72,15 @@ const serverlessConfiguration: AWS = {
           's3:GetObject'
         ],
         Resource: 'arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*'
+      },
+      {
+        Effect: 'Allow',
+        Action: [
+          'dynamodb:Scan',
+          'dynamodb:PutItem',
+          'dynamodb:DeleteItem',
+        ],
+        Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CONNECTIONS_TABLE}'
       }
   ],
     lambdaHashingVersion: '20201221',
@@ -81,7 +93,9 @@ const serverlessConfiguration: AWS = {
     getImages,
     getImage,
     createImage,
-    sendNotifications
+    sendNotifications,
+    connect,
+    disconnect
   },
   resources: {
     Resources: {
@@ -188,6 +202,25 @@ const serverlessConfiguration: AWS = {
             Ref: "AttachmentsBucket"
           }
         }
+      },
+      'WebSocketConnectionsDynamoDBTable': {
+        Type: 'AWS::DynamoDB::Table',
+        Properties: {
+          AttributeDefinitions: [
+            {
+              AttributeName: 'id',
+              AttributeType: 'S'
+            },
+          ],
+          KeySchema: [
+            {
+              AttributeName: 'id',
+              KeyType: 'HASH'
+            }
+          ],
+          BillingMode: 'PAY_PER_REQUEST',
+          TableName: "${self:provider.environment.CONNECTIONS_TABLE}"
+        }        
       }
     }
   }
