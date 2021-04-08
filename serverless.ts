@@ -1,11 +1,11 @@
 import type { AWS } from '@serverless/typescript';
 
 // import hello from '@functions/hello';
-import getGroups from '@functions/getGroups';
-import createGroup from '@functions/createGroup';
-import getImages from '@functions/getImages';
-import getImage from '@functions/getImage';
-import createImage from '@functions/createImage';
+import getGroups from '@functions/http/getGroups';
+import createGroup from '@functions/http/createGroup';
+import getImages from '@functions/http/getImages';
+import getImage from '@functions/http/getImage';
+import createImage from '@functions/http/createImage';
 import sendNotifications from '@functions/s3/sendNotifications';
 import connect from '@functions/websocket/connect';
 import disconnect from '@functions/websocket/disconnect'; 
