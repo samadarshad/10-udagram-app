@@ -9,6 +9,7 @@ import createImage from '@functions/http/createImage';
 import sendNotifications from '@functions/s3/sendNotifications';
 import connect from '@functions/websocket/connect';
 import disconnect from '@functions/websocket/disconnect'; 
+import syncWithElasticSearch from '@functions/dynamoDb/elasticSearchSync';
 
 const serverlessConfiguration: AWS = {
   service: 'serverless-udagram-app',
@@ -95,7 +96,8 @@ const serverlessConfiguration: AWS = {
     createImage,
     sendNotifications,
     connect,
-    disconnect
+    disconnect,
+    syncWithElasticSearch
   },
   resources: {
     Resources: {
@@ -156,7 +158,10 @@ const serverlessConfiguration: AWS = {
             }
           ],
           BillingMode: 'PAY_PER_REQUEST',
-          TableName: "${self:provider.environment.IMAGES_TABLE}"
+          TableName: "${self:provider.environment.IMAGES_TABLE}",
+          StreamSpecification: {
+            StreamViewType: 'NEW_IMAGE'
+          }
         }
       },
       'AttachmentsBucket': {
