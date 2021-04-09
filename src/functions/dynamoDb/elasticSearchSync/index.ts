@@ -11,5 +11,10 @@ export default {
         },
       }
     }
-  ]
+  ],
+  environment: {
+    ES_ENDPOINT: {
+      "Fn::GetAtt": ['ImagesSearch', 'DomainEndpoint']
+    }
+  }
 }
