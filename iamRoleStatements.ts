@@ -39,5 +39,12 @@ export default [
         'dynamodb:DeleteItem',
       ],
       Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CONNECTIONS_TABLE}'
+    },
+    {
+      Effect: 'Allow',
+      Action: [
+        's3:PutObject',
+      ],
+      Resource: 'arn:aws:s3:::${self:provider.environment.THUMBNAILS_S3_BUCKET}/*'
     }
 ]

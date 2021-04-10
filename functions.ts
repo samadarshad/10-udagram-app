@@ -7,6 +7,7 @@ import sendNotifications from '@functions/s3/sendNotifications';
 import connect from '@functions/websocket/connect';
 import disconnect from '@functions/websocket/disconnect'; 
 import syncWithElasticSearch from '@functions/dynamoDb/elasticSearchSync';
+import resizeImage from '@functions/s3/resizeImage';
 
 export default { 
     getGroups,
@@ -17,5 +18,6 @@ export default {
     sendNotifications,
     connect,
     disconnect,
-    syncWithElasticSearch
+    syncWithElasticSearch,
+    resizeImage
   }

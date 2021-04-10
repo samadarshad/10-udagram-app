@@ -6,5 +6,6 @@ export default {
     CONNECTIONS_TABLE: "Connections-${self:provider.stage}",
     IMAGE_ID_INDEX: "ImageIdIndex",
     IMAGES_S3_BUCKET: "serverless-udagram-${self:provider.environment.accountId}-images-${self:provider.stage}",
-    SIGNED_URL_EXPIRATION: '300'
+    SIGNED_URL_EXPIRATION: '300',
+    THUMBNAILS_S3_BUCKET: 'serverless-udagram-thumbnail-${self:provider.environment.accountId}-${self:provider.stage}'
   }

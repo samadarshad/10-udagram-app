@@ -92,9 +92,9 @@ export default {
               }
             ]
           }
-        }
-        
-      }, 
+        }        
+      },
+
       'BucketPolicy': {
         Type: 'AWS::S3::BucketPolicy',
         Properties: {
@@ -201,6 +201,30 @@ export default {
             { Ref: "ImagesTopic" }
           ]
         }
-      }
+      },
+      'ThumbnailsBucket': {
+        Type: 'AWS::S3::Bucket',
+        Properties: {
+          BucketName: "${self:provider.environment.THUMBNAILS_S3_BUCKET}",
+          CorsConfiguration: {
+            CorsRules: [
+              {
+                AllowedOrigins: ['*'],
+                AllowedHeaders: ['*'],
+                AllowedMethods: [
+                  'GET',
+                  'PUT',
+                  'POST',
+                  'DELETE',
+                  'HEAD'              
+                ],
+                MaxAge: 3000
+              }
+            ]
+          }
+        }
+        
+      }, 
+
     }
   }
