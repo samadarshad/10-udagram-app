@@ -65,8 +65,17 @@ export default {
       },
       'AttachmentsBucket': {
         Type: 'AWS::S3::Bucket',
+        DependsOn: ['SNSTopicPolicy'],
         Properties: {
           BucketName: "${self:provider.environment.IMAGES_S3_BUCKET}",
+          NotificationConfiguration: {
+            TopicConfigurations: [
+              {
+                Event: 's3:ObjectCreated:Put',
+                Topic: { Ref: 'ImagesTopic' }
+              }
+            ]
+          },
           CorsConfiguration: {
             CorsRules: [
               {
@@ -130,7 +139,7 @@ export default {
         Type: 'AWS::Elasticsearch::Domain',
         Properties: {
           ElasticsearchVersion: '6.3',
-          DomainName: 'images-search-${self:provider.stage}',
+          DomainName: '${self:custom.imagesSearchDomainName}',
           ElasticsearchClusterConfig: {
             DedicatedMasterEnabled: false,
             InstanceCount: '1',
@@ -152,10 +161,45 @@ export default {
                   AWS: ['*']
                 },
                 Action: ['es:*'],
-                Resource: 'arn:aws:es:${self:provider.region}:${self:provider.environment.accountId}:domain/images-search-${self:provider.stage}/*'
+                Resource: 'arn:aws:es:${self:provider.region}:${self:provider.environment.accountId}:domain/${self:custom.imagesSearchDomainName}/*'
               }
             ]
           }
+        }
+      },
+      'ImagesTopic': {
+        Type: 'AWS::SNS::Topic',
+        Properties: {
+          DisplayName: 'Image bucket topic',
+          TopicName: '${self:custom.topicName}'
+        }
+      },
+      'SNSTopicPolicy': {
+        Type: 'AWS::SNS::TopicPolicy',
+        Properties: {
+          PolicyDocument: {
+            Version: '2012-10-17',
+            Statement: [
+              {
+                Effect: 'Allow',
+                Principal: {
+                  AWS: ['*']
+                },
+                Action: ['sns:Publish'],
+                Resource: {
+                  Ref: 'ImagesTopic'
+                },
+                Condition: {
+                  ArnLike: {
+                    'AWS:SourceArn': 'arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}'
+                  }
+                }
+              }
+            ]
+          },
+          Topics: [
+            { Ref: "ImagesTopic" }
+          ]
         }
       }
     }

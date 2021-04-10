@@ -13,6 +13,8 @@ const serverlessConfiguration: AWS = {
       webpackConfig: './webpack.config.js',
       includeModules: true,
     },
+    topicName: 'imagesTopic-${self:provider.stage}',
+    imagesSearchDomainName: 'images-search-${self:provider.stage}'
   },
   plugins: ['serverless-webpack'],
   provider: {
