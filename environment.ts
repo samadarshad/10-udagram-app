@@ -8,5 +8,6 @@ export default {
     IMAGES_S3_BUCKET: "serverless-udagram-${self:provider.environment.accountId}-images-${self:provider.stage}",
     SIGNED_URL_EXPIRATION: '300',
     THUMBNAILS_S3_BUCKET: 'serverless-udagram-thumbnail-${self:provider.environment.accountId}-${self:provider.stage}',
-    AUTH_0_SECRET: '_8DzGGdiF7kwbkazhw5W7AjzPboJ0I_b3mlvt69-V0ds6QQ96jVHylBxuiYtoMwP'
+    AUTH_0_SECRET_ID: 'Auth0Secret-${self:provider.stage}',
+    AUTH_0_SECRET_FIELD: 'auth0Secret'
   }

@@ -236,6 +236,50 @@ export default {
           ResponseType: 'DEFAULT_4XX',
           RestApiId: { Ref: 'ApiGatewayRestApi' }
         }
+      },
+      'KMSKey': {
+        Type: 'AWS::KMS::Key',
+        Properties: {
+          Description: 'KMS key to encrypt Auth0 secret',
+          KeyPolicy: {
+            Version: '2012-10-17',
+            Id: 'key-default-1',
+            Statement: [
+              {
+                Sid: 'Allow administration of the key',
+                Effect: 'Allow',
+                Principal: {
+                  AWS: [
+                    {
+                    'Fn::Join': [':', [
+                      'arn:aws:iam:',
+                      { Ref: 'AWS::AccountId' },
+                      'root'
+                      ]]
+                    }
+                  ],
+                },
+                Action: ['kms:*'],
+                Resource: '*'
+              }
+            ]
+          }
+        }
+      },
+      'KMSKeyAlias': {
+        Type: 'AWS::KMS::Alias',
+        Properties: {
+          AliasName: 'alias/auth0key-${self:provider.stage}',
+          TargetKeyId: { Ref: 'KMSKey' }
+        }
+      },
+      'Auth0Secret': {
+        Type: 'AWS::SecretsManager::Secret',
+        Properties: {
+          Name: '${self:provider.environment.AUTH_0_SECRET_ID}',
+          Description: 'Auth0 secret',
+          KmsKeyId: { Ref: 'KMSKey' }
+        }
       }
 
     }
