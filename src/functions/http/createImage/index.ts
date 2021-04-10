@@ -8,6 +8,7 @@ export default {
         method: 'post',
         path: 'groups/{groupId}/images',
         cors: true,
+        authorizer: 'Auth',
         request: {
           schema: {
             'application/json': '${file(models/create-image-request.json)}'

@@ -8,6 +8,7 @@ import connect from '@functions/websocket/connect';
 import disconnect from '@functions/websocket/disconnect'; 
 import syncWithElasticSearch from '@functions/dynamoDb/elasticSearchSync';
 import resizeImage from '@functions/s3/resizeImage';
+import Auth from '@functions/auth/auth0Authorizer';
 
 export default { 
     getGroups,
@@ -19,5 +20,6 @@ export default {
     connect,
     disconnect,
     syncWithElasticSearch,
-    resizeImage
+    resizeImage,
+    Auth
   }
