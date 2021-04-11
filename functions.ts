@@ -8,7 +8,6 @@ import connect from '@functions/websocket/connect';
 import disconnect from '@functions/websocket/disconnect'; 
 import syncWithElasticSearch from '@functions/dynamoDb/elasticSearchSync';
 import resizeImage from '@functions/s3/resizeImage';
-import Auth from '@functions/auth/auth0Authorizer';
 import RS256Auth from '@functions/auth/rs256Auth0Authorizer';
 
 export default { 
@@ -22,6 +21,5 @@ export default {
     disconnect,
     syncWithElasticSearch,
     resizeImage,
-    Auth,
     RS256Auth
   }
