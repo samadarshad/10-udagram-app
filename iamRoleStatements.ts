@@ -46,5 +46,12 @@ export default [
         's3:PutObject',
       ],
       Resource: 'arn:aws:s3:::${self:provider.environment.THUMBNAILS_S3_BUCKET}/*'
+    }, 
+    {
+      Effect: 'Allow',
+      Action: [
+        'codedeploy:*',
+      ],
+      Resource: '*'
     }
 ]
