@@ -1,8 +1,10 @@
 import { SNSHandler, SNSEvent, S3Event } from 'aws-lambda'
 import 'source-map-support/register'
 import * as AWS  from 'aws-sdk'
+import * as AWSXRay from 'aws-xray-sdk'
+const XAWS = AWSXRay.captureAWS(AWS)
 
-const docClient = new AWS.DynamoDB.DocumentClient()
+const docClient = new XAWS.DynamoDB.DocumentClient()
 
 const connectionsTable = process.env.CONNECTIONS_TABLE
 const stage = process.env.STAGE
@@ -13,7 +15,7 @@ const connectionsParams = {
     endpoint: `${apiId}.execute-api.eu-west-2.amazonaws.com/${stage}`
 }
 
-const apiGateway = new AWS.ApiGatewayManagementApi(connectionsParams)
+const apiGateway = new XAWS.ApiGatewayManagementApi(connectionsParams)
 
 export const handler: SNSHandler = async (event: SNSEvent) => {
     console.log('Processing SNS event ', JSON.stringify(event));

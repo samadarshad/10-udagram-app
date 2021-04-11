@@ -30,6 +30,10 @@ const serverlessConfiguration: AWS = {
   },
   plugins,
   provider: {
+    tracing: {
+      lambda: true,
+      apiGateway: true
+    },
     name: 'aws',
     runtime: 'nodejs14.x',
     apiGateway: {
