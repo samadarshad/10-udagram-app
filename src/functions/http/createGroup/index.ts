@@ -8,7 +8,7 @@ export default {
         method: 'post',
         path: 'groups',
         cors: true,
-        authorizer: 'Auth',
+        authorizer: 'RS256Auth',
         request: {
           schema: {
             'application/json': '${file(models/create-group-request.json)}'
