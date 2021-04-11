@@ -4,6 +4,7 @@ import functions from 'functions';
 import resources from 'resources';
 import iamRoleStatements from 'iamRoleStatements';
 import environment from 'environment';
+import plugins from 'plugins';
 
 const serverlessConfiguration: AWS = {
   service: 'serverless-udagram-app',
@@ -14,9 +15,20 @@ const serverlessConfiguration: AWS = {
       includeModules: true,
     },
     topicName: 'imagesTopic-${self:provider.stage}',
-    imagesSearchDomainName: 'images-search-${self:provider.stage}'
+    imagesSearchDomainName: 'images-search-${self:provider.stage}',
+    'serverless-offline': {
+      port: 3003
+    },
+    dynamodb: {
+      start: {
+        port: 8000,
+        inMemory: true,
+        migrate: true
+      }
+    }
+
   },
-  plugins: ['serverless-webpack'],
+  plugins,
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
