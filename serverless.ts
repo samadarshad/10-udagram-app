@@ -29,9 +29,6 @@ const serverlessConfiguration: AWS = {
 
   },
   plugins,
-  package: {
-    individually: true
-  },
   provider: {
     tracing: {
       lambda: true,
